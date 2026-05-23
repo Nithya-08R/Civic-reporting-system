@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+<h2>Admin Panel</h2>
+
+<div>
+<a href="#">All Issues</a>
+<a href="admin-feedback.html">Feedback</a>
+<a href="javascript:void(0)" onclick="logout()">Logout</a>
+</div>
+</div>
+
+<h2 style="text-align:center; margin-top:20px;">All Reported Issues</h2>
+
+<h2 class="admin-title">📊 Issue Management Panel</h2>
+
+<div class="table-container">
+    <!-- DASHBOARD STATS -->
+<div class="admin-stats">
+
+<div class="stat-card">
+<h3>Total Issues</h3>
+<p id="totalCount">0</p>
+</div>
+
+<div class="stat-card pending-card">
+<h3>Pending</h3>
+<p id="pendingCount">0</p>
+</div>
+
+<div class="stat-card resolved-card">
+<h3>Resolved</h3>
+<p id="resolvedCount">0</p>
+</div>
+
+</div>
+
+<div style="text-align:center; margin:15px;">
+<select id="deptFilter" onchange="filterByDepartment()">
+
+<option value="All">All Departments</option>
+<option value="Public Works">Public Works</option>
+<option value="Sanitation">Sanitation</option>
+<option value="Electricity">Electricity</option>
+<option value="Water Department">Water Department</option>
+
+</select>
+</div>
+
+<table class="admin-table">
+
+<thead>
+<tr>
+<th>Image</th>
+<th>Title</th>
+<th>Category</th>
+<th>Department</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="issueTable"></tbody>
+
+</table>
+</div>
+
+<script src="js/admin.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

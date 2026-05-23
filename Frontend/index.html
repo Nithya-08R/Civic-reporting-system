@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Civic Portal Login</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="login-body">
+
+<div class="login-wrapper">
+
+    <!-- LEFT SIDE CONTENT -->
+    <div class="login-left">
+        <div class="overlay">
+            <h1>Smart Civic Portal</h1>
+            <p>
+                Report issues like potholes, garbage, streetlight problems 
+                and help build a better city.
+            </p>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE LOGIN -->
+    <div class="login-right">
+
+        <div class="login-card">
+
+            <!-- ROLE SWITCH -->
+            <div class="role-switch">
+                <button id="citizenBtn" class="active">Citizen</button>
+                <button id="adminBtn">Admin</button>
+            </div>
+
+            <h2 id="loginTitle">Citizen Login</h2>
+
+            <input type="email" id="loginEmail" placeholder="Email Address">
+            <input type="password" id="loginPassword" placeholder="Password">
+
+            <button onclick="loginUser()">Login</button>
+
+            <p class="register-text">
+                New user? <a href="register.html">Create Account</a>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/auth.js"></script>
+
+<script>
+// ROLE SWITCH UI
+let role = "citizen";
+
+document.getElementById("citizenBtn").onclick = () => {
+    role = "citizen";
+    document.getElementById("loginTitle").innerText = "Citizen Login";
+    setActive("citizenBtn");
+};
+
+document.getElementById("adminBtn").onclick = () => {
+    role = "admin";
+    document.getElementById("loginTitle").innerText = "Admin Login";
+    setActive("adminBtn");
+};
+
+function setActive(id){
+    document.getElementById("citizenBtn").classList.remove("active");
+    document.getElementById("adminBtn").classList.remove("active");
+    document.getElementById(id).classList.add("active");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Feedback</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>Admin Panel</h2>
+
+    <div>
+        <a href="admin.html">Dashboard</a>
+        <a href="admin-feedback.html">Feedback</a>
+        <a href="javascript:void(0)" onclick="logout()">Logout</a>
+    </div>
+</div>
+
+<h2 class="section-title">Citizen Feedback</h2>
+
+<!-- FEEDBACK DISPLAY -->
+<div id="adminFeedback"></div>
+
+
+<script>
+
+// ================= LOGIN CHECK =================
+const token = localStorage.getItem("token");
+
+if(!token){
+alert("Login required");
+window.location="index.html";
+}
+
+
+// ================= LOGOUT =================
+function logout(){
+localStorage.clear();
+window.location="index.html";
+}
+
+
+// ================= LOAD FEEDBACK =================
+async function loadFeedback(){
+
+try{
+
+const res = await fetch("http://localhost:5000/api/feedback/all", {
+headers:{
+Authorization:"Bearer " + token
+}
+});
+
+// HANDLE ERROR
+if(!res.ok){
+const text = await res.text();
+console.log("SERVER ERROR:", text);
+throw new Error("Server error");
+}
+
+const data = await res.json();
+
+console.log("FEEDBACK:", data);
+
+// CHECK ARRAY
+if(!Array.isArray(data)){
+alert(data.message || "Error loading feedback");
+return;
+}
+
+// DISPLAY
+displayFeedback(data);
+
+}catch(err){
+console.log("ERROR:", err);
+document.getElementById("adminFeedback").innerHTML =
+"<p style='color:red;'>Error loading feedback</p>";
+}
+
+}
+
+
+// ================= DISPLAY =================
+function displayFeedback(data){
+
+const container = document.getElementById("adminFeedback");
+container.innerHTML = "";
+
+// EMPTY
+if(data.length === 0){
+container.innerHTML = "<p>No feedback available</p>";
+return;
+}
+
+data.forEach(fb => {
+
+container.innerHTML += `
+<div class="card feedback-card">
+
+<h3>${fb.name || "User"}</h3>
+
+<p><b>Phone:</b> ${fb.phone || "-"}</p>
+
+<p><b>Feedback Type:</b> ${fb.feedback_type || "-"}</p>
+
+<p><b>Message:</b> ${fb.message || "-"}</p>
+
+<p class="rating">⭐ ${fb.rating || 0}/5</p>
+
+</div>
+`;
+
+});
+
+}
+
+
+// LOAD PAGE
+loadFeedback();
+
+</script>
+
+</body>
+</html>

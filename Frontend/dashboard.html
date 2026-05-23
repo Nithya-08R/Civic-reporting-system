@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Citizen Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<div class="navbar">
+    <h2>Civic Issue Portal</h2>
+
+    <div>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="report.html">Report Issue</a>
+        <a href="myissues.html">My Issues</a>
+        <a href="notifications.html">Notifications</a>
+        <!-- <a href="myfeedback.html">My Feedback</a> -->
+        <a href="javascript:void(0)" onclick="logout()">Logout</a>
+    </div>
+</div>
+
+
+<!-- ================= HERO ================= -->
+<div class="dashboard-header">
+    <h1>Welcome Citizen 👋</h1>
+    <p>Help improve your city by reporting civic problems</p>
+</div>
+
+
+<!-- ================= ACTION CARDS ================= -->
+<div class="issue-cards">
+
+    <!-- REPORT -->
+    <div class="card action-card"
+         onclick="location.href='report.html'"
+         style="cursor:pointer;">
+        <h3>📢 Report New Issue</h3>
+        <p>Report civic problems easily in your area.</p>
+        <button>Report Issue</button>
+    </div>
+
+    <!-- MY ISSUES -->
+    <div class="card action-card"
+         onclick="location.href='myissues.html'"
+         style="cursor:pointer;">
+        <h3>📂 My Reported Issues</h3>
+        <p>Track status of your submitted complaints.</p>
+        <button>View Issues</button>
+    </div>
+
+    <!-- FEEDBACK (NEW) -->
+    <div class="card action-card"
+         onclick="location.href='feedback.html'"
+         style="cursor:pointer;">
+        <h3>💬 Give Feedback</h3>
+        <p>Share your experience and help us improve the system.</p>
+        <button>Give Feedback</button>
+    </div>
+
+</div>
+
+
+<!-- ================= FEEDBACK DISPLAY ================= -->
+<!-- <h2 class="section-title">Citizen Feedback</h2>
+<div id="feedbackList"></div> -->
+
+
+<!-- ================= CIVIC ISSUE AWARENESS ================= -->
+<h2 class="section-title">Common Civic Issues</h2>
+
+<div class="issue-types">
+
+    <div class="issue-card">
+        <img src="images/pothole.png">
+        <h3>Pothole</h3>
+        <p>Damaged road surface causing accidents.</p>
+    </div>
+
+    <div class="issue-card">
+        <img src="images/garbage.jpg">
+        <h3>Garbage Overflow</h3>
+        <p>Uncollected waste affecting environment.</p>
+    </div>
+
+    <div class="issue-card">
+        <img src="images/streetlight.jpg">
+        <h3>Streetlight Issue</h3>
+        <p>Non-working lights reduce road safety.</p>
+    </div>
+
+    <div class="issue-card">
+        <img src="images/drinage.jpg">
+        <h3>Drainage Blockage</h3>
+        <p>Blocked drainage causing flooding.</p>
+    </div>
+
+    <div class="issue-card">
+        <img src="images/waterleakage.jpg">
+        <h3>Water Leakage</h3>
+        <p>Pipeline leakage wasting water.</p>
+    </div>
+
+    <div class="issue-card">
+        <img src="images/roaddamage.jpg">
+        <h3>Road Damage</h3>
+        <p>Broken infrastructure affects transport.</p>
+    </div>
+
+    <div class="issue-card">
+        <img src="images/toilet.jpg">
+        <h3>Public Toilet Issue</h3>
+        <p>Unclean sanitation facilities.</p>
+    </div>
+
+    <div class="issue-card">
+        <img src="images/dumping.jpg">
+        <h3>Illegal Dumping</h3>
+        <p>Waste dumped in public places.</p>
+    </div>
+
+</div>
+
+
+<!-- ================= SCRIPT ================= -->
+<script>
+
+// ================= LOGIN PROTECTION =================
+const token = localStorage.getItem("token");
+
+if (!token) {
+    alert("Please login first");
+    window.location.href = "index.html";
+}
+
+
+// ================= LOGOUT =================
+function logout() {
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    alert("Logged out successfully");
+    window.location.href = "index.html";
+}
+
+
+// ================= LOAD FEEDBACK =================
+async function loadFeedback(){
+
+const token = localStorage.getItem("token");
+
+if(!token){
+alert("Login required");
+window.location = "index.html";
+return;
+}
+
+try{
+
+const res = await fetch("http://localhost:5000/api/feedback/all", {
+headers: {
+Authorization: "Bearer " + token
+}
+});
+
+// 🔥 HANDLE ERROR
+if(!res.ok){
+const text = await res.text();
+console.log("SERVER ERROR:", text);
+throw new Error("Server Error");
+}
+
+const data = await res.json();
+
+console.log("FEEDBACK:", data);
+
+const container = document.getElementById("feedbackList");
+container.innerHTML = "";
+
+// IF EMPTY
+if(!Array.isArray(data) || data.length === 0){
+container.innerHTML = "<p>No feedback available</p>";
+return;
+}
+
+// DISPLAY
+data.forEach(fb => {
+
+container.innerHTML += `
+<div class="card">
+<h3>${fb.name || "User"}</h3>
+<p><b>Phone:</b> ${fb.phone || "-"}</p>
+<p><b>Type:</b> ${fb.feedback_type || "-"}</p>
+<p>${fb.message || "-"}</p>
+<p>⭐ ${fb.rating || 0}/5</p>
+</div>
+`;
+
+});
+
+}catch(err){
+console.log("ERROR:", err);
+document.getElementById("feedbackList").innerHTML =
+"<p style='color:red;'>Error loading feedback</p>";
+}
+
+}
+
+// LOAD
+loadFeedback();
+
+</script>
+
+</body>
+</html>

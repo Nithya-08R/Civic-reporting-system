@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Report Issue</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="css/style.css">
+<style>
+
+/* ===== BACKGROUND IMAGE ===== */
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+
+    background-image: url("images/bg.jpg"); /* your image path */
+    background-size: cover;        /* full screen */
+    background-position: center;  /* center image */
+    background-repeat: no-repeat; /* no repeat */
+    background-attachment: fixed; /* fixed scroll */
+}
+
+/* DARK OVERLAY FOR BETTER LOOK */
+body::before{
+    content:"";
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:-1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Report Civic Issue</h2>
+
+<!-- TITLE -->
+<label>Issue Title *</label>
+<input type="text" id="title" placeholder="Issue Title" required>
+
+<!-- DESCRIPTION -->
+<label>Description (Max 100 words) *</label>
+<textarea id="description" placeholder="Description" required></textarea>
+<p id="wordCount" style="font-size:12px;color:gray;">0 / 100 words</p>
+
+<!-- CATEGORY -->
+<label>Category *</label>
+<select id="category" required>
+<option value="">Select Category</option>
+<option>Pothole</option>
+<option>Garbage</option>
+<option>Streetlight</option>
+<option>Drainage</option>
+</select>
+
+<!-- LANDMARK -->
+<label>Nearby Landmark / Building Name *</label>
+<input type="text" id="landmark" placeholder="Landmark" required>
+
+<!-- DISTRICT -->
+<!-- DISTRICT -->
+<label>District *</label>
+<select id="district" required>
+<option value="">Select District</option>
+
+<option>Chennai</option>
+<option>Coimbatore</option>
+<option>Madurai</option>
+<option>Salem</option>
+<option>Tiruchirappalli</option>
+<option>Tirunelveli</option>
+<option>Vellore</option>
+<option>Erode</option>
+<option>Thoothukudi</option>
+<option>Dindigul</option>
+<option>Thanjavur</option>
+<option>Ranipet</option>
+<option>Sivaganga</option>
+<option>Virudhunagar</option>
+<option>Karur</option>
+<option>Namakkal</option>
+<option>Krishnagiri</option>
+<option>Dharmapuri</option>
+<option>Kanchipuram</option>
+<option>Chengalpattu</option>
+<option>Tiruvallur</option>
+<option>Tiruppur</option>
+<option>Kanyakumari</option>
+<option>Cuddalore</option>
+<option>Villupuram</option>
+<option>Nagapattinam</option>
+<option>Mayiladuthurai</option>
+<option>Perambalur</option>
+<option>Ariyalur</option>
+<option>Tenkasi</option>
+<option>The Nilgiris</option>
+
+</select>
+
+<!-- Already Reported -->
+<label>Already Reported Earlier?</label>
+<select id="alreadyReported" onchange="checkReported()">
+<option value="no">No</option>
+<option value="yes">Yes</option>
+</select> 
+
+<!-- Action Taken -->
+<div id="actionSection" style="display:none;">
+<label>Was Any Action Taken?</label>
+<select id="actionTaken" onchange="checkActionTaken()">
+<option value="no">No</option>
+<option value="yes">Yes</option>
+</select>
+</div> 
+
+<!-- Reason -->
+<div id="reasonSection" style="display:none;">
+<label>Why problem still not solved?</label>
+<textarea id="unsolvedReason" placeholder="Explain the reason"></textarea>
+</div>
+
+<!-- IMAGE -->
+<label>Upload Image *</label>
+<input type="file" id="image" required>
+
+<button class="location-btn" onclick="getLocation()">Get Location</button>
+
+<p id="locationText"></p>
+
+<button onclick="submitIssue()">Submit Issue</button> 
+
+<!-- GET LOCATION -->
+<!-- <button class="location-btn" onclick="getLocation()">
+<i class="fas fa-map-marker-alt"></i> Get Location
+</button> -->
+
+<!-- SUBMIT -
+<button class="submit-btn" onclick="submitIssue()">
+<i class="fas fa-paper-plane"></i> Submit Issue
+</button>-->
+
+</div>
+
+<script src="js/report.js"></script>
+
+<!-- WORD LIMIT SCRIPT -->
+<script>
+const descBox = document.getElementById("description");
+const wordCount = document.getElementById("wordCount");
+
+descBox.addEventListener("input", () => {
+
+let words = descBox.value.trim().split(/\s+/).filter(w => w.length > 0);
+
+if(words.length > 100){
+words = words.slice(0, 100);
+descBox.value = words.join(" ");
+}
+
+wordCount.innerText = words.length + " / 100 words";
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Feedback</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Civic Issue Portal</h2>
+    <div>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="feedback.html">Give Feedback</a>
+        <a href="javascript:void(0)" onclick="logout()">Logout</a>
+    </div>
+</div>
+
+<h2 class="section-title">My Feedback</h2>
+
+<div id="myFeedbackList"></div>
+
+<script>
+
+const token = localStorage.getItem("token");
+
+if(!token){
+alert("Login first");
+window.location="index.html";
+}
+
+// LOGOUT
+function logout(){
+localStorage.clear();
+window.location="index.html";
+}
+
+// LOAD MY FEEDBACK
+async function loadMyFeedback(){
+
+const res = await fetch("http://localhost:5000/api/feedback/all", {
+headers:{
+Authorization:"Bearer " + token
+}
+});
+
+const data = await res.json();
+
+const user = JSON.parse(localStorage.getItem("user"));
+
+const container = document.getElementById("myFeedbackList");
+container.innerHTML = "";
+
+// FILTER ONLY MY FEEDBACK
+const myData = data.filter(fb => fb.user_id == user.id);
+
+if(myData.length === 0){
+container.innerHTML = "<p>No feedback submitted</p>";
+return;
+}
+
+myData.forEach(fb => {
+container.innerHTML += `
+<div class="card">
+<h3>${fb.feedback_type}</h3>
+<p>${fb.message}</p>
+<p>⭐ ${fb.rating}/5</p>
+</div>
+`;
+});
+
+}
+
+loadMyFeedback();
+
+</script>
+
+</body>
+</html>

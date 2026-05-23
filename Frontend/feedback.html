@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Give Feedback</title>
+<link rel="stylesheet" href="css/style.css">
+
+<!-- ICONS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+/* ===== BACKGROUND ===== */
+body{
+    margin:0;
+    font-family:Arial;
+    background:url("images/feedback.jpg") no-repeat center center/cover;
+}
+
+/* OVERLAY */
+body::before{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:-1;
+}
+
+/* FORM */
+.form-container{
+    max-width:500px;
+    margin:60px auto;
+    padding:30px;
+    background:rgba(255,255,255,0.95);
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.subtitle{
+    text-align:center;
+    color:gray;
+    margin-bottom:20px;
+}
+
+.input-box{
+    display:flex;
+    align-items:center;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:8px;
+    margin-bottom:15px;
+}
+
+.input-box i{
+    margin-right:10px;
+}
+
+.input-box input{
+    border:none;
+    outline:none;
+    width:100%;
+}
+
+textarea{
+    width:100%;
+    height:100px;
+    border-radius:8px;
+    padding:10px;
+    border:1px solid #ccc;
+}
+
+/* ⭐ RATING */
+.rating-box span{
+    font-size:28px;
+    cursor:pointer;
+    color:#bbb;
+    transition:0.2s;
+}
+
+.rating-box span:hover,
+.rating-box span.active{
+    color:gold;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:12px;
+    background:#ff6b35;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+button:hover{
+    background:#e65c2f;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="form-container">
+
+<h2>💬 Share Your Feedback</h2>
+<p class="subtitle">Help us improve civic services</p>
+
+<form onsubmit="submitFeedback(event)">
+
+<!-- NAME -->
+<label>Full Name *</label>
+<div class="input-box">
+<i class="fa fa-user"></i>
+<input type="text" id="name" required>
+</div>
+
+<!-- PHONE -->
+<label>Phone Number *</label>
+<div class="input-box">
+<i class="fa fa-phone"></i>
+<input type="text" id="phone" required>
+</div>
+
+<!-- TYPE -->
+<label>Feedback Type *</label>
+<select id="feedbackType" required>
+<option value="">Select Type</option>
+<option>Service Appreciation 👍</option>
+<option>Quick Resolution ⚡</option>
+<option>Good Support 😊</option>
+<option>Delay Issue ⏳</option>
+<option>Poor Response 😡</option>
+<option>System Issue ⚠️</option>
+</select>
+
+<!-- MESSAGE -->
+<label>Your Feedback *</label>
+<textarea id="message" required></textarea>
+<p id="wordCount">0 / 80 words</p>
+
+<!-- ⭐ RATING -->
+<label>Rating *</label>
+<div class="rating-box" id="stars">
+<span data-value="1">★</span>
+<span data-value="2">★</span>
+<span data-value="3">★</span>
+<span data-value="4">★</span>
+<span data-value="5">★</span>
+</div>
+
+<input type="hidden" id="rating">
+
+<button id="submitBtn">
+<i class="fa fa-paper-plane"></i> Submit Feedback
+</button>
+
+</form>
+
+</div>
+
+
+<script>
+
+// ===== STAR RATING FIX =====
+const stars = document.querySelectorAll("#stars span");
+let selectedRating = 0;
+
+stars.forEach(star => {
+
+star.addEventListener("click", () => {
+
+selectedRating = star.getAttribute("data-value");
+document.getElementById("rating").value = selectedRating;
+
+// REMOVE ALL ACTIVE
+stars.forEach(s => s.classList.remove("active"));
+
+// ADD ACTIVE
+for(let i=0; i<selectedRating; i++){
+stars[i].classList.add("active");
+}
+
+});
+
+});
+
+
+// ===== WORD LIMIT =====
+const msg = document.getElementById("message");
+const wordCount = document.getElementById("wordCount");
+
+msg.addEventListener("input", () => {
+
+let words = msg.value.trim().split(/\s+/).filter(w => w);
+
+if(words.length > 80){
+words = words.slice(0,80);
+msg.value = words.join(" ");
+}
+
+wordCount.innerText = words.length + " / 80 words";
+
+});
+
+
+// ===== SUBMIT =====
+async function submitFeedback(e){
+
+e.preventDefault();
+
+const name = document.getElementById("name").value.trim();
+const phone = document.getElementById("phone").value.trim();
+const type = document.getElementById("feedbackType").value;
+const message = document.getElementById("message").value.trim();
+const rating = selectedRating;
+
+const token = localStorage.getItem("token");
+
+// VALIDATION
+if(!name.match(/^[A-Za-z ]{3,}$/)){
+alert("Enter valid name");
+return;
+}
+
+if(!phone.match(/^[0-9]{10}$/)){
+alert("Enter valid phone number");
+return;
+}
+
+if(!type){
+alert("Select feedback type");
+return;
+}
+
+if(message.split(/\s+/).length < 5){
+alert("Write meaningful feedback");
+return;
+}
+
+if(rating == 0){
+alert("Select rating");
+return;
+}
+
+// LOADING
+const btn = document.getElementById("submitBtn");
+btn.innerHTML = "Submitting...";
+btn.disabled = true;
+
+try{
+
+const res = await fetch("http://localhost:5000/api/feedback/add", {
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+Authorization:"Bearer " + token
+},
+body: JSON.stringify({
+name,
+phone,
+feedback_type:type,
+message,
+rating
+})
+});
+
+const data = await res.json();
+
+alert(data.message || "Feedback submitted");
+
+// RESET
+e.target.reset();
+wordCount.innerText = "0 / 80 words";
+selectedRating = 0;
+stars.forEach(s => s.classList.remove("active"));
+
+}catch(err){
+alert("Error");
+}
+
+// ENABLE
+btn.innerHTML = "Submit Feedback";
+btn.disabled = false;
+
+}
+
+</script>
+
+</body>
+</html>
