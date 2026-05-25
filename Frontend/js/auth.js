@@ -1,6 +1,6 @@
 
 // ================= API =================
-const API = "http://localhost:5000/api/auth";
+const API = "https://civic-reporting-backend.onrender.com/api/auth";
 
 
 // ================= REGISTER =================

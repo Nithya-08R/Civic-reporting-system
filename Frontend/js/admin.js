@@ -2,7 +2,7 @@
 
 // // ================= LOAD ON PAGE =================
 // loadIssues();
-const API = "http://localhost:5000/api/issues";
+const API = "https://civic-reporting-backend.onrender.com/api/issues";
 
 let allIssues = []; // store all issues globally
 
@@ -119,7 +119,7 @@ table.innerHTML += `
 
 <td>
 <img class="issue-img"
-src="http://localhost:5000/uploads/${issue.image_url || 'default.png'}">
+src="https://civic-reporting-backend.onrender.com/uploads/${issue.image_url || 'default.png'}">
 </td>
 
 <td>${issue.title || '-'}</td>
@@ -224,7 +224,7 @@ async function loadAdminFeedback(){
 
 const token = localStorage.getItem("token");
 
-const res = await fetch("http://localhost:5000/api/feedback/all", {
+const res = await fetch("https://civic-reporting-backend.onrender.com/api/feedback/all", {
 headers: {
 Authorization: "Bearer " + token
 }

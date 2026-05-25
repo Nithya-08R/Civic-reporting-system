@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api/notifications";
+const API = "https://civic-reporting-backend.onrender.com/api/notifications";
 
 async function loadNotifications(){
 

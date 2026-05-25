@@ -1,5 +1,5 @@
-// const API = "http://localhost:5000/api/feedback";
-const API = "http://localhost:5000/api/feedback";
+
+const API = "https://civic-reporting-backend.onrender.com/api/feedback";
 
 function submitFeedback(){
 
