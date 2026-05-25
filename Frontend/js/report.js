@@ -2,7 +2,7 @@
 let latitude = "";
 let longitude = "";
 
-const API = "https://civic-reporting-backend.onrender.com/api/issues";
+const API = "https://civic-reporting-backend-vuir.onrender.com/api/issues";
 
 
 // ===============================

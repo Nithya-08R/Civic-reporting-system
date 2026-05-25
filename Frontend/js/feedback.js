@@ -1,5 +1,5 @@
 
-const API = "https://civic-reporting-backend.onrender.com/api/feedback";
+const API = "https://civic-reporting-backend-vuir.onrender.com/api/feedback";
 
 function submitFeedback(){
 

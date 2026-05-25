@@ -1,6 +1,6 @@
 
 // ================= API =================
-const API = "https://civic-reporting-backend.onrender.com/api/auth";
+const API = "https://civic-reporting-backend-vuir.onrender.com/api/auth";
 
 
 // ================= REGISTER =================
