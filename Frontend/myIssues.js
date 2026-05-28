@@ -1,4 +1,4 @@
-const API="http://localhost:5000/api/issues";
+const API="https://civic-reporting-backend-vuir.onrender.com/api/issues";
 
 const token=localStorage.getItem("token");
 
