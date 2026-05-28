@@ -14,7 +14,7 @@
     <div>
         <a href="dashboard.html">Dashboard</a>
         <a href="report.html">Report Issue</a>
-        <a href="myissues.html">My Issues</a>
+        <a href="myIssues.html">My Issues</a>
         <a href="notifications.html">Notifications</a>
         <!-- <a href="myfeedback.html">My Feedback</a> -->
         <a href="javascript:void(0)" onclick="logout()">Logout</a>
@@ -43,7 +43,7 @@
 
     <!-- MY ISSUES -->
     <div class="card action-card"
-         onclick="location.href='myissues.html'"
+         onclick="location.href='myIssues.html'"
          style="cursor:pointer;">
         <h3>📂 My Reported Issues</h3>
         <p>Track status of your submitted complaints.</p>
@@ -159,7 +159,7 @@ return;
 
 try{
 
-const res = await fetch("http://localhost:5000/api/feedback/all", {
+const res = await fetch("https://civic-reporting-backend-vuir.onrender.com/api/feedback/all", {
 headers: {
 Authorization: "Bearer " + token
 }
