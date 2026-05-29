@@ -42,8 +42,9 @@ color="green";
 
 container.innerHTML+=`
 <div class="card">
-
 <img src="https://civic-reporting-backend-vuir.onrender.com/uploads/${issue.image_url}" />
+
+
 
 <h3>${issue.title}</h3>
 
