@@ -46,7 +46,7 @@ message: "User already exists"
 // INSERT USER (DEFAULT ROLE = citizen)
 db.query(
 "INSERT INTO users (name,email,password,role) VALUES (?,?,?,?)",
-[name, email, hashedPassword, "citizen"],
+[name, email, hashedPassword, "admin"],
 (err) => {
 
 if (err) {
