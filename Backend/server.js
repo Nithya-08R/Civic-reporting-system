@@ -24,13 +24,13 @@ app.use("/api/issues",issueRoutes);
 app.use("/api/issues",
 require("./routes/issueRoutes"));
 
-
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
-});
 app.use("/uploads", express.static("uploads"));
 app.use("/api/notifications", require("./routes/notificationRoutes"));
 
 
 const feedbackRoute = require("./routes/feedbackRoute");
 app.use("/api/feedback", feedbackRoute);
+
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
+});
