@@ -119,7 +119,7 @@ table.innerHTML += `
 
 <td>
 <img class="issue-img"
-src="https://civic-reporting-backend.onrender.com/uploads/${issue.image_url || 'default.png'}">
+src="https://civic-reporting-backend-vuir.onrender.com/uploads/${issue.image_url || 'default.png'}">
 </td>
 
 <td>${issue.title || '-'}</td>
