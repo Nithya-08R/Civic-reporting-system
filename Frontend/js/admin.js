@@ -224,7 +224,7 @@ async function loadAdminFeedback(){
 
 const token = localStorage.getItem("token");
 
-const res = await fetch("https://civic-reporting-backend.onrender.com/api/feedback/all", {
+const res = await fetch("https://civic-reporting-vuir.backend.onrender.com/api/feedback/all", {
 headers: {
 Authorization: "Bearer " + token
 }
