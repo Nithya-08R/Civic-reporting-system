@@ -2,7 +2,7 @@
 
 // // ================= LOAD ON PAGE =================
 // loadIssues();
-const API = "https://civic-reporting-backend-vuir.onrender.com/api/issues";
+const ADMIN_API = "https://civic-reporting-backend-vuir.onrender.com/api/issues";
 
 let allIssues = []; // store all issues globally
 
@@ -224,7 +224,7 @@ async function loadAdminFeedback(){
 
 const token = localStorage.getItem("token");
 
-const res = await fetch("https://civic-reporting-vuir.backend.onrender.com/api/feedback/all", {
+const res = await fetch("https://civic-reporting-backend-vuir.onrender.com/api/feedback/all", {
 headers: {
 Authorization: "Bearer " + token
 }
